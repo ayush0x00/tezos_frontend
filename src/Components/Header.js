@@ -1,26 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { TezosToolkit } from "@taquito/taquito";
+import { BeaconWallet } from "@taquito/beacon-wallet";
 import { Navbar, NavbarBrand, NavbarText } from "reactstrap";
 import logo from "../logo.jpg";
+const Tezos = new TezosToolkit("https://testnet-tezos.giganode.io");
+const options = { name: "MyAwesomeDapp" };
+const wallet = new BeaconWallet(options);
 
 const Header = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [address, setAddress] = useState();
+  const [balance, setBalance] = useState(100);
 
-  const toggle = () => setIsOpen(!isOpen);
+  useEffect(async () => {
+    await wallet.requestPermissions({ network: { type: "granadanet" } });
+    Tezos.setWalletProvider(wallet);
+    setAddress(await wallet.getPKH());
+    alert(JSON.stringify({ address }).toString());
+    setBalance(await Tezos.tz.getBalance({ address }));
+  }, []);
 
   return (
-    <>
-      <div>
+    <div class="container">
+      <div class="row">
         <Navbar color="light" light expand="md">
-          <NavbarBrand href="/">
-            <div class="d-flex align-items-center">
+          <NavbarBrand href="/" class="col-md-6">
+            <div>
               <img src={logo} style={{ width: 80 }}></img>
               <p>Tezos</p>
             </div>
           </NavbarBrand>
+          <div class="col">
+            <div>
+              <p>
+                {{ address }
+                  ? `Wallet connected at ${address} with balance ${balance}`
+                  : "Wallet not connected"}
+              </p>
+            </div>
+          </div>
         </Navbar>
       </div>
-      <div className="container">Wallet Address</div>
-    </>
+    </div>
   );
 };
 export default Header;
