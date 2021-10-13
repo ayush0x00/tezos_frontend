@@ -1,24 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { TezosToolkit } from "@taquito/taquito";
-import { BeaconWallet } from "@taquito/beacon-wallet";
+
 import { Navbar, NavbarBrand, NavbarText } from "reactstrap";
 import logo from "../logo.jpg";
-const Tezos = new TezosToolkit("https://testnet-tezos.giganode.io");
-const options = { name: "MyAwesomeDapp" };
-const wallet = new BeaconWallet(options);
 
 const Header = (props) => {
-  const [address, setAddress] = useState();
-  const [balance, setBalance] = useState(100);
-
-  useEffect(async () => {
-    await wallet.requestPermissions({ network: { type: "granadanet" } });
-    Tezos.setWalletProvider(wallet);
-    setAddress(await wallet.getPKH());
-    alert(JSON.stringify({ address }).toString());
-    setBalance(await Tezos.tz.getBalance({ address }));
-  }, []);
-
+  const address = props.address;
+  const balance = props.balance;
   return (
     <div class="container">
       <div class="row">
@@ -33,7 +20,7 @@ const Header = (props) => {
             <div>
               <p>
                 {{ address }
-                  ? `Wallet connected at ${address} with balance ${balance}`
+                  ? `Wallet connected at ${address} with balance ${balance} Tz`
                   : "Wallet not connected"}
               </p>
             </div>
