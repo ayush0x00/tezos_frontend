@@ -7,31 +7,35 @@ import { TezosToolkit } from "@taquito/taquito";
 import { BeaconWallet } from "@taquito/beacon-wallet";
 
 function App() {
-  const Tezos = new TezosToolkit("https://granadanet.api.tez.ie");
+  let Tezos = new TezosToolkit("https://granadanet.api.tez.ie");
+  //Tezos.setProvider({ signer: new TezBridgeSigner() });
   const options = { name: "MyAwesomeDapp" };
-  const wallet = new BeaconWallet(options);
-  const contractAddress = "KT1Qbs6BhxLwkhhghKpF8ZR7nAVDx66cCSrm";
-  let contractInstance;
-  let storage;
+  let wallet = new BeaconWallet(options);
+  const contractAddress = "KT1ELJFbe1fjsAqRMbwKVS51kp3ZpBmSCpKP";
   const [address, setAddress] = useState();
   const [balance, setBalance] = useState(100);
+  const [storage, setStorage] = useState();
+  const [contract, setContract] = useState();
 
-  useEffect(async () => {
-    await wallet.requestPermissions({ network: { type: "granadanet" } });
-    Tezos.setWalletProvider(wallet);
-    const taddress = await wallet.getPKH();
-    const tbalance = await Tezos.tz.getBalance(taddress);
-    setAddress(taddress);
-    setBalance(tbalance / 1000000);
-    contractInstance = await Tezos.wallet.at(contractAddress);
-    storage = await contractInstance.storage();
-  }, [address, balance]);
-
+  useEffect(() => {
+    (async function init() {
+      await wallet.requestPermissions({ network: { type: "granadanet" } });
+      Tezos.setWalletProvider(wallet);
+      const taddress = await wallet.getPKH();
+      const tbalance = await Tezos.tz.getBalance(taddress);
+      setAddress(taddress);
+      setBalance(tbalance / 1000000);
+      const contractInstance = await Tezos.wallet.at(contractAddress);
+      setContract(contractInstance);
+      const tstorage = await contractInstance.storage();
+      setStorage(tstorage);
+    })();
+  }, []);
   return (
     <div className="App justify-content-center">
       <Header address={address} balance={balance} />
       <br />
-      <Search />
+      <Search storage={storage} />
       <br />
       <Footer />
     </div>
