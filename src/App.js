@@ -5,6 +5,7 @@ import Footer from "./Components/Footer";
 import Search from "./Components/Search";
 import { TezosToolkit } from "@taquito/taquito";
 import { BeaconWallet } from "@taquito/beacon-wallet";
+import TokenizeTweet from "./Components/TokenizeTweet";
 
 function App() {
   let Tezos = new TezosToolkit("https://granadanet.api.tez.ie");
@@ -36,6 +37,8 @@ function App() {
       <Header address={address} balance={balance} />
       <br />
       <Search storage={storage} />
+      <br />
+      <TokenizeTweet contract={contract} />
       <br />
       <Footer />
     </div>
