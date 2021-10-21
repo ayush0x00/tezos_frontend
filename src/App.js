@@ -5,14 +5,14 @@ import Footer from "./Components/Footer";
 import Search from "./Components/Search";
 import { TezosToolkit } from "@taquito/taquito";
 import { BeaconWallet } from "@taquito/beacon-wallet";
-import TokenizeTweet from "./Components/TokenizeTweet";
+// import TokenizeTweet from "./Components/TokenizeTweet";
 
 function App() {
   let Tezos = new TezosToolkit("https://granadanet.api.tez.ie");
   //Tezos.setProvider({ signer: new TezBridgeSigner() });
   const options = { name: "MyAwesomeDapp" };
   let wallet = new BeaconWallet(options);
-  const contractAddress = "KT1ELJFbe1fjsAqRMbwKVS51kp3ZpBmSCpKP";
+  const contractAddress = "KT1X6UZJwYHvZnwGJGi1g22fXJdHTRk5mEp4";
   const [address, setAddress] = useState();
   const [balance, setBalance] = useState(100);
   const [storage, setStorage] = useState();
@@ -38,7 +38,6 @@ function App() {
       <br />
       <Search storage={storage} />
       <br />
-      <TokenizeTweet contract={contract} />
       <br />
       <Footer />
     </div>

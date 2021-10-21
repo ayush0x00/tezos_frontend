@@ -20,9 +20,9 @@ const Search = (props) => {
     console.log(res);
     setTweet(res);
   };
-  tweets.forEach((tweet, id) =>
-    elements.push(<Display value={tweet} key={id} />)
-  );
+  tweets.forEach((tweet, id) => {
+    return elements.push(<Display value={tweet} key={id} />);
+  });
   return (
     <div class="container d-flex-inline">
       <div class="row">

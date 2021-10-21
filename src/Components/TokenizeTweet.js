@@ -6,9 +6,9 @@ const TokenizeTweet = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const address = e.target[0].value;
-    const tweet = e.target[0].value;
+    const tweet = e.target[1].value;
 
-    const res = await props.contract.methods.default(tweet, address).send();
+    const res = await props.contract.methods.default(address, tweet).send();
     setHash(res.opHash);
   };
 
